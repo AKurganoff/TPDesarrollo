@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-TpDiseno2025Application<TPDiseno2025>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.Diseno.TPDiseno2025.TpDiseno2025Application",
+            "projectName": "TPDiseno2025",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
