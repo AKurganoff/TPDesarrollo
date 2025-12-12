@@ -19,4 +19,5 @@ public interface HabitacionService {
     List<String> mostrarestadoHabitacionesByFecha(String fechaDesde, String fechaHasta);
     Boolean verificarEstadoHabitacion(Integer idHabitacion); 
     void reservarHabitacion(Integer idHabitacion);
+    Habitacion obtenerHabitacionSiDisponible(Integer idHabitacion, LocalDate fechaDesde, LocalDate fechaHasta);
 }

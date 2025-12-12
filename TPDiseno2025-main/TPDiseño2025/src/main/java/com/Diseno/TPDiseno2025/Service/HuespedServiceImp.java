@@ -56,10 +56,17 @@ public class HuespedServiceImp implements HuespedService {
         }
 
         //Guardar Huésped 
-        Huesped huesped = this.mapToEntity(new Huesped(), hDTO);
-        huesped.setDireccion(dir); 
-        Huesped huesped1 = huespedRepository.save(huesped);
-
+        Huesped huesped, huesped1;
+        if(huespedRepository.existsByTipoDniAndDni(hDTO.getTipoDni(), hDTO.getDni())){
+            huesped = huespedRepository.findByTipoDniAndDni(hDTO.getTipoDni(), hDTO.getDni()).get();
+            huesped.setDireccion(dir);
+            huesped1 = huespedRepository.save(huesped);
+        }else{
+            huesped = this.mapToEntity(new Huesped(), hDTO);
+            huesped.setDireccion(dir); 
+            huesped1 = huespedRepository.save(huesped);
+        }
+        
         String telefonoVieneDelFront = hDTO.getTelefono(); 
 
         if (telefonoVieneDelFront != null && !telefonoVieneDelFront.trim().isEmpty()) {
@@ -315,7 +322,8 @@ public class HuespedServiceImp implements HuespedService {
     @Override
     public void modificarHuespedDTO(String tipoDni, Integer dni, HuespedDTO hDTO) {
         
-        Huesped huespedExistente = huespedRepository.findByTipoDniAndDni(tipoDni, dni).get();
+        Huesped huespedExistente = huespedRepository.findById(dni)
+                    .orElseThrow(() -> new IllegalArgumentException("No se encontro el huesped"));
 
         Direccion nuevaDireccion = direccionService.mapToEntDireccion(hDTO.getDireccion());
         if (!direccionService.direccionExists(
@@ -332,6 +340,7 @@ public class HuespedServiceImp implements HuespedService {
         }
         
         huespedExistente.setDireccion(nuevaDireccion);
+        huespedExistente.setTipoDni(tipoDni);
         huespedExistente.setEmail(hDTO.getEmail());
         huespedExistente.setPosIva(hDTO.getPosIva());
         huespedExistente.setNombre(hDTO.getNombre());
@@ -385,4 +394,3 @@ public class HuespedServiceImp implements HuespedService {
         return hDTOs;
     }
 }
-

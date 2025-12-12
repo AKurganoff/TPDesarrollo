@@ -260,9 +260,9 @@ export default function OcuparHabitacionPage() {
                         </div>
                     `,
                     icon: 'success',
+                    showConfirmButton: false,
                     showDenyButton: true,
                     showCancelButton: true,
-                    confirmButtonText: 'Seguir cargando',
                     denyButtonText: 'Cargar otra hab.',
                     cancelButtonText: 'Salir'
                 }).then((result) => {

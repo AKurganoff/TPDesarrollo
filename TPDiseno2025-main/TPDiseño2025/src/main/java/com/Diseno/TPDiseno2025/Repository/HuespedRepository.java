@@ -34,4 +34,6 @@ public interface HuespedRepository extends JpaRepository<Huesped, Integer> {
         Integer dni
     );
 
+    Boolean existsByTipoDniAndDni(String tipoDni, Integer dni);
+
 }

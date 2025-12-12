@@ -17,9 +17,7 @@ import com.Diseno.TPDiseno2025.Model.CeldaCalendarioDTO;
 import com.Diseno.TPDiseno2025.Model.HabitacionDTO;
 import com.Diseno.TPDiseno2025.Model.HuespedDTO;
 import com.Diseno.TPDiseno2025.Model.ReservaDTO;
-import com.Diseno.TPDiseno2025.Service.DetalleReservaService;
-import com.Diseno.TPDiseno2025.Service.HabitacionService;
-import com.Diseno.TPDiseno2025.Service.HuespedService;
+import com.Diseno.TPDiseno2025.Service.ReservaFacade;
 import com.Diseno.TPDiseno2025.Service.ReservaService;
 
 import lombok.Data;
@@ -32,26 +30,20 @@ public class ReservaController {
     Logger logger = org.slf4j.LoggerFactory.getLogger(HuespedController.class);
 
     private final ReservaService reservaService;
-    private final HuespedService huespedService;
-    private final HabitacionService habitacionService;
-    private final DetalleReservaService detalleReservaService;
+    private final ReservaFacade reservaFacade;
 
-    public ReservaController(final ReservaService reservaService, final HuespedService huespedService, final HabitacionService habitacionService, final DetalleReservaService detalleReservaService){
+    public ReservaController(final ReservaService reservaService, final ReservaFacade reservaFacade){
         this.reservaService = reservaService;
-        this.huespedService = huespedService;
-        this.habitacionService = habitacionService;
-        this.detalleReservaService = detalleReservaService;
+        this.reservaFacade = reservaFacade;
     }
 
     // CREAR RESERVA 
     @PostMapping("/crear")
     public ResponseEntity<String> crearReserva(@RequestBody SolicitudReserva request) {
-        try {
-            reservaService.crearReserva(request.getReserva(), request.getHuesped(), request.getHabitacion());
-            return ResponseEntity.ok("Reserva creada con éxito");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error al crear reserva: " + e.getMessage());
-        }
+        reservaFacade.procesarCrearReserva(request.getReserva(),
+                                            request.getHuesped(),
+                                            request.getHabitacion());
+        return ResponseEntity.ok("Reserva Creada Con Exito");
     }
 
     // DISPONIBILIDAD 

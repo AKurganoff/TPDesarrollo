@@ -118,4 +118,13 @@ public class HabitacionServiceImp implements HabitacionService{
         }
         return disponible;
     }
+
+    @Override
+    public Habitacion obtenerHabitacionSiDisponible(Integer idHabitacion, LocalDate fechaDesde, LocalDate fechaHasta){
+        boolean disponible = this.habitacionDisponibleEnFechas(idHabitacion, fechaDesde, fechaHasta);
+        if (!disponible) {
+            throw new IllegalArgumentException("Habitación no disponible.");
+        }
+        return this.buscarHabitacionByIdHabitacion(idHabitacion);
+    }
 }

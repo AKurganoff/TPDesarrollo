@@ -18,4 +18,5 @@ public interface ReservaService {
     Reserva mapToEntity(ReservaDTO r);
     ReservaDTO mapToDTO(Reserva r);
     List<CeldaCalendarioDTO> obtenerMatrizDisponibilidad(String inicioStr, String finStr, Integer idTipo);
+    Reserva guardarReserva(Reserva r);
 }
