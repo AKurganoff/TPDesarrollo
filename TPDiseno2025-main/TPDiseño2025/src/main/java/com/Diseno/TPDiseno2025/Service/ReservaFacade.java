@@ -2,67 +2,72 @@ package com.Diseno.TPDiseno2025.Service;
 
 import java.time.LocalDate;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.Diseno.TPDiseno2025.Domain.DetalleReserva;
 import com.Diseno.TPDiseno2025.Domain.Habitacion;
 import com.Diseno.TPDiseno2025.Domain.Huesped;
 import com.Diseno.TPDiseno2025.Domain.Reserva;
-import com.Diseno.TPDiseno2025.Model.HabitacionDTO;
-import com.Diseno.TPDiseno2025.Model.HuespedDTO;
-import com.Diseno.TPDiseno2025.Model.ReservaDTO;
-import com.Diseno.TPDiseno2025.Service.HabitacionService;
-import com.Diseno.TPDiseno2025.Service.HuespedService;
-import com.Diseno.TPDiseno2025.Service.ReservaService;
-import com.Diseno.TPDiseno2025.Service.DetalleReservaService;
+import com.Diseno.TPDiseno2025.Model.CrearReservaRequest;
 
 import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
 public class ReservaFacade {
-   
+
     private final HabitacionService habitacionService;
     private final HuespedService huespedService;
     private final ReservaService reservaService;
     private final DetalleReservaService detalleService;
 
-    public ReservaFacade(HabitacionService habitacionService, HuespedService huespedService, ReservaService reservaService, DetalleReservaService detalleService){
+    public ReservaFacade(HabitacionService habitacionService,
+                         HuespedService huespedService,
+                         ReservaService reservaService,
+                         DetalleReservaService detalleService) {
         this.habitacionService = habitacionService;
         this.huespedService = huespedService;
         this.reservaService = reservaService;
         this.detalleService = detalleService;
     }
 
-    public void procesarCrearReserva(ReservaDTO r, HuespedDTO h, HabitacionDTO hab){
-        
-        LocalDate fechaDesde = LocalDate.parse(r.getFechaInicio());
-        LocalDate fechaHasta = fechaDesde.plusDays(r.getCantNoches());
+    public Integer procesarCrearReserva(CrearReservaRequest req) {
 
-        //Habitacion
+        LocalDate fechaDesde = LocalDate.parse(req.getReserva().getFechaInicio());
+        LocalDate fechaHasta = fechaDesde.plusDays(req.getReserva().getCantNoches());
+
+        // Habitación (valida disponibilidad por conflicto de fechas)
         Habitacion habitacion = habitacionService.obtenerHabitacionSiDisponible(
-            hab.getIdHabitacion(), fechaDesde, fechaHasta);
+                req.getHabitacion().getIdHabitacion(), fechaDesde, fechaHasta);
 
-        //Huesped
-        Huesped huesped = huespedService.buscarHuespedByTipoDniAndDni(h.getTipoDni(), h.getDni());
+        // Huésped existente
+        Huesped huesped = huespedService.buscarHuespedByTipoDniAndDni(
+                req.getHuesped().getTipoDni(), req.getHuesped().getDni());
 
-        // crear y guardar reserva
-        Reserva nuevaReserva = reservaService.mapToEntity(r);
-        nuevaReserva.setHuesped(huesped);
+        // Reserva
+        Reserva nueva = new Reserva();
+        nueva.setHuesped(huesped);
+        nueva.setCantHuesped(req.getReserva().getCantHuesped());
+        nueva.setFechaInicio(fechaDesde);
+        nueva.setCantNoches(req.getReserva().getCantNoches());
+        nueva.setDescuento(req.getReserva().getDescuento());
 
-        Reserva reservaGuardada = reservaService.guardarReserva(nuevaReserva);
+        String estado = req.getReserva().getEstado();
+        nueva.setEstado((estado == null || estado.isBlank()) ? "Confirmada" : estado);
 
-        // crear y guardar el detalle
+        Reserva reservaGuardada = reservaService.guardarReserva(nueva);
+
+        // Detalle
         DetalleReserva detalle = new DetalleReserva();
         detalle.setReserva(reservaGuardada);
         detalle.setHabitacion(habitacion);
 
-        //calculo del precio
-        double precioTotal = habitacion.getIdTipo().getPrecioNoche() * r.getCantNoches();
+        double precioTotal = habitacion.getIdTipo().getPrecioNoche() * req.getReserva().getCantNoches();
         detalle.setPrecio(precioTotal);
-        detalle.setCantidadNoches(r.getCantNoches());
+        detalle.setCantidadNoches(req.getReserva().getCantNoches());
 
         detalleService.guardarDetalle(detalle);
+
+        return reservaGuardada.getIdReserva();
     }
 }
