@@ -45,6 +45,9 @@ public class Huesped {
     @Column(name = "pos_iva", nullable = true)
     private String posIva;
 
+    @Column(name = "activo", nullable = false)
+    private Boolean activo = true;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumns({
         @JoinColumn(name = "calle", referencedColumnName = "calle"),
