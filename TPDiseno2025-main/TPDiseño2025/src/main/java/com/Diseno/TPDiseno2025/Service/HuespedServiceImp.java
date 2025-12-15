@@ -16,6 +16,9 @@ import com.Diseno.TPDiseno2025.Repository.DireccionRepository;
 import com.Diseno.TPDiseno2025.Repository.HuespedRepository;
 import com.Diseno.TPDiseno2025.Repository.TelefonoRepository;
 import com.Diseno.TPDiseno2025.Util.NotFoundException;
+import com.Diseno.TPDiseno2025.Service.strategy.BajaHuespedContext;
+import com.Diseno.TPDiseno2025.Service.strategy.BajaModo;
+
 
 @Service
 public class HuespedServiceImp implements HuespedService {
@@ -31,6 +34,9 @@ public class HuespedServiceImp implements HuespedService {
 
     @Autowired 
     private TelefonoRepository telefonoRepository;
+
+    @Autowired
+    private BajaHuespedContext bajaHuespedContext;
 
     @Override
     public void crearHuesped(Huesped h) {
@@ -393,4 +399,15 @@ public class HuespedServiceImp implements HuespedService {
         }
         return hDTOs;
     }
+    @Override
+public void darDeBajaHuesped(String tipoDni, Integer dni, String modo) {
+    BajaModo m = BajaModo.from(modo);
+
+    // Si pide baja fisica, primero borramos telefonos del huesped (evita FK / datos colgados)
+    if (m == BajaModo.FISICA) {
+        telefonoRepository.deleteByHuesped_Dni(dni);
+    }
+
+    bajaHuespedContext.darDeBaja(tipoDni, dni, m);
+}
 }
