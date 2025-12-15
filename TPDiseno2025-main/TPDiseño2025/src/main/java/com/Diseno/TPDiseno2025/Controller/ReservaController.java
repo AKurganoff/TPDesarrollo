@@ -41,22 +41,13 @@ public class ReservaController {
     }
 
     // CREAR RESERVA (CU04)
-    @PostMapping("/crear")
-    public ResponseEntity<?> crearReserva(@Valid @RequestBody SolicitudReserva request) {
-        try {
-            reservaFacade.procesarCrearReserva(
-                request.getReserva(),
-                request.getHuesped(),
-                request.getHabitacion()
-            );
-            return ResponseEntity.status(HttpStatus.CREATED).body("Reserva creada con éxito");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body("Error al crear reserva: " + e.getMessage());
-        }
+ @PostMapping("/crear")
+    public ResponseEntity<?> crearReserva(@Valid @RequestBody CrearReservaRequest request) {
+        Integer idReserva = reservaFacade.procesarCrearReserva(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(idReserva);
     }
 
-    // DISPONIBILIDAD
+    // cu5
     @GetMapping("/disponibilidad")
     public ResponseEntity<List<CeldaCalendarioDTO>> obtenerDisponibilidad(
             @RequestParam("fechaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String inicioStr,
@@ -66,6 +57,8 @@ public class ReservaController {
         return ResponseEntity.ok(reservaService.obtenerMatrizDisponibilidad(inicioStr, finStr, idTipo));
     }
 }
+
+
 
 // Clase auxiliar
 @Data
