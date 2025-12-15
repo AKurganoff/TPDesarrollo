@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PatchMapping;
 
 import com.Diseno.TPDiseno2025.Model.HuespedDTO;
 import com.Diseno.TPDiseno2025.Service.HuespedService;
@@ -115,4 +116,18 @@ public class HuespedController {
         huespedservice.eliminarHuespedByTipoDniAndDni(tipodni, dni);
         return ResponseEntity.noContent().build();
     }
+
+
+@PatchMapping("/{tipodni}/{dni}/baja")
+public ResponseEntity<String> bajaHuesped(
+        @PathVariable(name = "dni") final Integer dni,
+        @PathVariable(name = "tipodni") final String tipodni,
+        @RequestParam(name = "modo", required = false, defaultValue = "AUTO") String modo) {
+
+    huespedservice.darDeBajaHuesped(tipodni, dni, modo);
+    return ResponseEntity.ok("Huesped dado de baja (" + modo + ")");
+}
+
+
+    
 }
