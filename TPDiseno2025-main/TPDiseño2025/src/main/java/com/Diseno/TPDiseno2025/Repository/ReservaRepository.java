@@ -16,6 +16,8 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
     
     Boolean existsByHuesped_Dni(Integer dni);
 
+    Boolean existsByHuesped_DniAndEstadoNotIgnoreCase(Integer dni, String estado);
+
     List<Reserva> findByEstadoStartingWithIgnoreCase(String estado);
 
 }
