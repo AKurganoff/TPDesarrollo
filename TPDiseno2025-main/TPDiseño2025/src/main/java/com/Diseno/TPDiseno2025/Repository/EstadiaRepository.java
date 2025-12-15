@@ -7,5 +7,6 @@ import com.Diseno.TPDiseno2025.Domain.Reserva;
 
 public interface EstadiaRepository extends JpaRepository<Estadia, Integer>{
 	boolean existsByReserva(Reserva reserva);
+	boolean existsByReserva_Huesped_Dni(Integer dni);
 }
 
