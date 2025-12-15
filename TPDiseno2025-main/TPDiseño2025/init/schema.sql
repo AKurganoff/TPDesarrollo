@@ -403,6 +403,7 @@ CREATE TABLE public.huesped (
     departamento character varying(5) NOT NULL,
     piso integer NOT NULL,
     cod_postal integer NOT NULL,
+    activo boolean NOT NULL DEFAULT true,
     CONSTRAINT huesped_cod_postal_check CHECK ((cod_postal > 0)),
     CONSTRAINT huesped_dni_check CHECK ((dni_huesped > 0)),
     CONSTRAINT huesped_edad_check CHECK (((edad > 0) AND (edad < 110))),
