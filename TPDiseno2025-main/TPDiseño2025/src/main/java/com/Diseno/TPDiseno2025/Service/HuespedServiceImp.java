@@ -18,6 +18,8 @@ import com.Diseno.TPDiseno2025.Repository.TelefonoRepository;
 import com.Diseno.TPDiseno2025.Util.NotFoundException;
 import com.Diseno.TPDiseno2025.Service.strategy.BajaHuespedContext;
 import com.Diseno.TPDiseno2025.Service.strategy.BajaModo;
+import jakarta.transaction.Transactional;
+
 
 
 @Service
@@ -393,6 +395,7 @@ public void eliminarHuespedByTipoDniAndDni(String tipoDni, Integer dni) {
         }
         return hDTOs;
     }
+@Transactional
     @Override
 public void darDeBajaHuesped(String tipoDni, Integer dni, String modo) {
     BajaModo m = BajaModo.from(modo);
