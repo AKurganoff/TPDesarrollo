@@ -116,16 +116,10 @@ public class HuespedServiceImp implements HuespedService {
     }
 
     @Override
-    public void eliminarHuespedByTipoDniAndDni(String tipoDni, Integer dni) {
-        if(huespedRepository.findByTipoDniAndDni(tipoDni, dni) != null){
-            HuespedDTO hDTO = new HuespedDTO();
-            hDTO = this.mapToDTO(huespedRepository.findByTipoDniAndDni(tipoDni, dni).get(), hDTO);
-            huespedRepository.delete(huespedRepository.findByTipoDniAndDni(tipoDni, dni).get());
-            telefonoRepository.delete(telefonoRepository.findByTelefono(hDTO.getTelefono()).get());
-        } else{
-            throw(new NotFoundException("Huesped no encontrado"));
-        }
-    }
+@Override
+public void eliminarHuespedByTipoDniAndDni(String tipoDni, Integer dni) {
+    this.darDeBajaHuesped(tipoDni, dni, "FISICA");
+}
 
     @Override
     public List<Huesped> obtenerTodos() {
