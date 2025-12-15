@@ -118,7 +118,7 @@ public class HuespedServiceImp implements HuespedService {
 
 @Override
 public void eliminarHuespedByTipoDniAndDni(String tipoDni, Integer dni) {
-    this.darDeBajaHuesped(tipoDni, dni, "FISICA");
+    this.darDeBajaHuesped(tipoDni, dni, "AUTO");
 }
 
     @Override
