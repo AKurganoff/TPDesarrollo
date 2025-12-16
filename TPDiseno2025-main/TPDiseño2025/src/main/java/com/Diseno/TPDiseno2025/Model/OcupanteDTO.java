@@ -4,29 +4,16 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-
-
 @Getter
 @Setter
-public class DetalleEstadiaDTO {
-    
+public class OcupanteDTO {
     @NotNull
-    private Integer idDetalleEstadia;
-
-    @NotNull
-    private Integer idEstadia;
-
-    @NotNull
-    private Integer dniHuesped;
-
+    private Integer idHuesped;
     @NotNull
     private String nombre;
-    
     @NotNull
     private String apellido;
-    
     @NotNull
     @Size(max = 10)
     private String dni;
-
 }

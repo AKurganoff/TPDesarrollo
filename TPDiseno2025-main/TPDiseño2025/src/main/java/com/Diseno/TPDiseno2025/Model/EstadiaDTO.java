@@ -25,4 +25,6 @@ public class EstadiaDTO {
     @NotNull
     private LocalTime horaCheckout;
 
+    @NotNull
+    private Integer numeroHabitacion;
 }
