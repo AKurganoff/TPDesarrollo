@@ -25,10 +25,10 @@ SET row_security = off;
 -- Name: public; Type: SCHEMA; Schema: -; Owner: pg_database_owner
 --
 
-CREATE SCHEMA public;
+--CREATE SCHEMA public;
 
 
-ALTER SCHEMA public OWNER TO pg_database_owner;
+--ALTER SCHEMA public OWNER TO pg_database_owner;
 
 --
 -- TOC entry 3634 (class 0 OID 0)
@@ -36,7 +36,7 @@ ALTER SCHEMA public OWNER TO pg_database_owner;
 -- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: pg_database_owner
 --
 
-COMMENT ON SCHEMA public IS 'standard public schema';
+--COMMENT ON SCHEMA public IS 'standard public schema';
 
 
 SET default_tablespace = '';
@@ -412,7 +412,8 @@ CREATE TABLE public.huesped (
 );
 
 
-ALTER TABLE public.huesped OWNER TO postgres;
+ALTER TABLE public.huesped
+ADD COLUMN IF NOT EXISTS activo boolean NOT NULL DEFAULT true;
 
 --
 -- TOC entry 226 (class 1259 OID 16444)
