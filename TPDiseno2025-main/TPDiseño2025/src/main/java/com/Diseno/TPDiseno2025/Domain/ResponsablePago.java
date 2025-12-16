@@ -1,12 +1,16 @@
 package com.Diseno.TPDiseno2025.Domain;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.EnumType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,4 +29,17 @@ public class ResponsablePago {
 
     @Column(name = "razon_social", nullable = false)
     private String razonSocial;
+
+    @Enumerated(EnumType.STRING)
+    private TipoResponsable tipo; // FISICA / JURIDICA
+
+    @Column(unique = true)
+    private String cuit;   // para jurídica
+
+    private String dni;    // para física
+
+    private LocalDate fechaNacimiento; // validar mayoría de edad
+
+    @Column(name = "condicionIVA", nullable = false)
+    private String condicionIVA;
 }

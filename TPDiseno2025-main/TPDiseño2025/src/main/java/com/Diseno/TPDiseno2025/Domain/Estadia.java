@@ -1,13 +1,14 @@
 package com.Diseno.TPDiseno2025.Domain;
 
 import java.time.LocalTime;
-
+import java.util.List;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,4 +34,7 @@ public class Estadia {
     @OneToOne
     @JoinColumn(name="id_reserva", referencedColumnName="id_reserva", nullable=false)
     private Reserva reserva;
+
+    @OneToMany(mappedBy = "idEstadia")
+    private List<Consumible> consumos;
 }

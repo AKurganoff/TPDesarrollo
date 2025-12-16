@@ -28,4 +28,11 @@ public class Consumible {
 
     @Column(nullable=false)
     private String nombre;
+
+    @ManyToOne
+    @JoinColumn(name = "id_factura", nullable = false)
+    private Factura factura;
+
+    @Column(nullable = false)
+    private boolean facturado;
 }
