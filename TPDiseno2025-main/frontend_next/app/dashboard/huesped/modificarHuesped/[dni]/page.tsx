@@ -34,6 +34,7 @@ export default function ModificarHuespedPage({ params }: { params: Promise<{ dni
 
   const [loading, setLoading] = useState(true);
   const [guardando, setGuardando] = useState(false);
+  const [eliminando, setEliminando] = useState(false);
   const [errores, setErrores] = useState<Record<string, string>>({}); // Estado para bordes rojos
   
   const [form, setForm] = useState<HuespedForm>({
@@ -273,6 +274,41 @@ export default function ModificarHuespedPage({ params }: { params: Promise<{ dni
     }
   };
 
+  // --- 6. ELIMINAR HUESPED ---
+    
+    const handleEliminar = async () => {
+        const confirmResult = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Esta acción no se puede deshacer.",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonColor: '#3085d6',
+            confirmButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Sí, eliminar'
+            
+        });
+        if (confirmResult.isConfirmed) {
+            setEliminando(true);
+            try {
+                const res = await fetch(`http://localhost:8081/huespedes/${form.tipoDni}/${form.dni}`, {
+                    method: "DELETE"
+                });
+                if (res.ok) {
+                    await Swal.fire("Eliminado", "Huésped eliminado correctamente.", "success");
+                    router.push("/dashboard/huesped");
+                } else {
+                    const txt = await res.text();
+                    Swal.fire("Error", "No se pudo eliminar: " + txt, "error");
+                }
+            } catch (e) {
+                Swal.fire("Error", "Error de conexión", "error");
+            } finally {
+                setEliminando(false);
+            }
+        }
+    }
+
   if (loading) return <div className="p-8 text-center text-gray-600 font-bold">Cargando datos del huésped...</div>;
 
   return (
@@ -396,6 +432,13 @@ export default function ModificarHuespedPage({ params }: { params: Promise<{ dni
                 Cancelar
             </button>
             <button 
+                onClick={handleEliminar} 
+                disabled={eliminando}
+                className="px-8 py-2.5 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 shadow-md transition transform active:scale-95 disabled:opacity-50"
+            >
+                {eliminando ? "Eliminando..." : "Eliminar Huésped"}
+            </button>
+             <button 
                 onClick={handleGuardar} 
                 disabled={guardando}
                 className="px-8 py-2.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-md transition transform active:scale-95 disabled:opacity-50"
