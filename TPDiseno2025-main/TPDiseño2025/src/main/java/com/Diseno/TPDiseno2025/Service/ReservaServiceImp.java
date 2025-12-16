@@ -197,9 +197,9 @@ public class ReservaServiceImp implements ReservaService {
     public List<ReservaListadoDTO> buscarReservas(String apellido,String nombre){
         List<Reserva> reservas;
         if (nombre != null && !nombre.isBlank()) {
-            reservas = reservaRepository.findByHuesped_NombreAndHuesped_Apellido(nombre, apellido);
+            reservas = reservaRepository.findByHuesped_NombreAndHuesped_ApellidoIgnoreCase(nombre, apellido);
         } else {
-            reservas = reservaRepository.findByHuesped_Apellido(apellido);
+            reservas = reservaRepository.findByHuesped_ApellidoIgnoreCase(apellido);
         }
         List<ReservaListadoDTO> listaDTO = new ArrayList<>();
         for (Reserva reserva: reservas) {
@@ -231,7 +231,7 @@ public class ReservaServiceImp implements ReservaService {
         //Se cambia el estado de la habitacion a disponible
         for (DetalleReserva detalle : detalles) {
             Habitacion h = detalle.getHabitacion();
-            h.setEstado("Disponible");
+            h.setEstado("Libre");
             habitacionRepository.save(h);
         }
 

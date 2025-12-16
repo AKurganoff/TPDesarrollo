@@ -59,18 +59,23 @@ public class ReservaController {
         return ResponseEntity.ok( reservaService.obtenerMatrizDisponibilidad(inicioStr, finStr, idTipo));
     }
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<ReservaListadoDTO>> buscarReservas(
-        @RequestParam String apellido,
-        @RequestParam(required = false) String nombre
+        @RequestParam("apellido") String apellido,
+        @RequestParam(value = "nombre", required = false) String nombre
         ) {
         return ResponseEntity.ok(reservaService.buscarReservas(apellido, nombre));
     }
     
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> cancelarReservas(@PathVariable Integer id){
-        reservaService.cancelarReserva(id);
-        return ResponseEntity.noContent().build();
+        try {
+            reservaService.cancelarReserva(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            e.printStackTrace(); // <-- esto te va a mostrar el CAUSE en consola
+            throw e;
+        }
     }
 }
 

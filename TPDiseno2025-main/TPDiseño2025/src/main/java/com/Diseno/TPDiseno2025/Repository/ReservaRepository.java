@@ -20,7 +20,7 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
 
     void deleteById(Integer idReserva);
 
-    List<Reserva> findByHuesped_NombreAndHuesped_Apellido(String nombre,String apellido);
+    List<Reserva> findByHuesped_NombreAndHuesped_ApellidoIgnoreCase(String nombre,String apellido);
 
-    List<Reserva> findByHuesped_Apellido(String apellido);
+    List<Reserva> findByHuesped_ApellidoIgnoreCase(String apellido);
 }
