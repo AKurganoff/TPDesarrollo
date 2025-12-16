@@ -6,7 +6,9 @@ import org.slf4j.Logger;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,7 @@ import com.Diseno.TPDiseno2025.Model.CeldaCalendarioDTO;
 import com.Diseno.TPDiseno2025.Model.HabitacionDTO;
 import com.Diseno.TPDiseno2025.Model.HuespedDTO;
 import com.Diseno.TPDiseno2025.Model.ReservaDTO;
+import com.Diseno.TPDiseno2025.Model.ReservaListadoDTO;
 import com.Diseno.TPDiseno2025.Service.ReservaFacade;
 import com.Diseno.TPDiseno2025.Service.ReservaService;
 
@@ -56,6 +59,24 @@ public class ReservaController {
         return ResponseEntity.ok( reservaService.obtenerMatrizDisponibilidad(inicioStr, finStr, idTipo));
     }
 
+    @GetMapping("/")
+    public ResponseEntity<List<ReservaListadoDTO>> buscarReservas(
+        @RequestParam("apellido") String apellido,
+        @RequestParam(value = "nombre", required = false) String nombre
+        ) {
+        return ResponseEntity.ok(reservaService.buscarReservas(apellido, nombre));
+    }
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> cancelarReservas(@PathVariable Integer id){
+        try {
+            reservaService.cancelarReserva(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            e.printStackTrace(); // <-- esto te va a mostrar el CAUSE en consola
+            throw e;
+        }
+    }
 }
 
 // Clase auxiliar 

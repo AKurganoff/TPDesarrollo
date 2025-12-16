@@ -7,7 +7,7 @@ import com.Diseno.TPDiseno2025.Model.CeldaCalendarioDTO;
 import com.Diseno.TPDiseno2025.Model.HabitacionDTO;
 import com.Diseno.TPDiseno2025.Model.HuespedDTO;
 import com.Diseno.TPDiseno2025.Model.ReservaDTO; 
-
+import com.Diseno.TPDiseno2025.Model.ReservaListadoDTO;
 public interface ReservaService {
     
     void crearReserva(ReservaDTO r, HuespedDTO h, HabitacionDTO habitacion);
@@ -19,4 +19,6 @@ public interface ReservaService {
     ReservaDTO mapToDTO(Reserva r);
     List<CeldaCalendarioDTO> obtenerMatrizDisponibilidad(String inicioStr, String finStr, Integer idTipo);
     Reserva guardarReserva(Reserva r);
+    List<ReservaListadoDTO> buscarReservas(String apellido,String nombre);
+    void cancelarReserva(Integer idReserva);
 }

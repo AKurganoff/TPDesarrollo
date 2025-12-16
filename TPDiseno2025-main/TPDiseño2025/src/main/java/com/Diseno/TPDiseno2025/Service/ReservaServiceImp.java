@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.Diseno.TPDiseno2025.Domain.DetalleReserva;
 import com.Diseno.TPDiseno2025.Domain.Habitacion;
@@ -15,8 +16,11 @@ import com.Diseno.TPDiseno2025.Model.CeldaCalendarioDTO;
 import com.Diseno.TPDiseno2025.Model.HabitacionDTO;
 import com.Diseno.TPDiseno2025.Model.HuespedDTO;
 import com.Diseno.TPDiseno2025.Model.ReservaDTO;
+import com.Diseno.TPDiseno2025.Model.ReservaListadoDTO;
+import com.Diseno.TPDiseno2025.Repository.DetalleReservaRepository;
 import com.Diseno.TPDiseno2025.Repository.EstadiaRepository;
 import com.Diseno.TPDiseno2025.Repository.ReservaRepository;
+import com.Diseno.TPDiseno2025.Repository.HabitacionRepository;
 
 
 
@@ -38,6 +42,12 @@ public class ReservaServiceImp implements ReservaService {
 
     @Autowired
     private EstadiaRepository estadiaRepository;
+
+    @Autowired
+    private DetalleReservaRepository detalleReservaRepository;
+
+    @Autowired
+    private HabitacionRepository habitacionRepository;
 
     @Override   
     public void crearReserva(ReservaDTO r, HuespedDTO h, HabitacionDTO habitacion) {
@@ -184,4 +194,56 @@ public class ReservaServiceImp implements ReservaService {
         return reservaRepository.save(r);
     }
 
+    public List<ReservaListadoDTO> buscarReservas(String apellido,String nombre){
+        List<Reserva> reservas;
+        if (nombre != null && !nombre.isBlank()) {
+            reservas = reservaRepository.findByHuesped_NombreAndHuesped_ApellidoIgnoreCase(nombre, apellido);
+        } else {
+            reservas = reservaRepository.findByHuesped_ApellidoIgnoreCase(apellido);
+        }
+        List<ReservaListadoDTO> listaDTO = new ArrayList<>();
+        for (Reserva reserva: reservas) {
+            List<DetalleReserva> detalles = detalleReservaRepository.findByReserva_IdReserva(reserva.getIdReserva());
+            for (DetalleReserva detalle : detalles) {
+            ReservaListadoDTO dto = new ReservaListadoDTO();
+                dto.setIdReserva(reserva.getIdReserva());
+                dto.setApellido(reserva.getHuesped().getApellido());
+                dto.setNombre(reserva.getHuesped().getNombre());
+                dto.setNumeroHabitacion(detalle.getHabitacion().getIdHabitacion());
+                dto.setTipoHabitacion(detalle.getHabitacion().getIdTipo());
+                dto.setFechaInicio(reserva.getFechaInicio());
+                dto.setFechaFin(dto.getFechaInicio().plusDays(reserva.getCantNoches()));
+                listaDTO.add(dto);
+            }
+        }
+        return listaDTO;
+    }
+
+    @Transactional
+    public void cancelarReserva(Integer idReserva) {
+
+        Reserva reserva = reservaRepository.findById(idReserva).orElseThrow(() -> new NotFoundException("Reserva no encontrada"));
+        reserva.setEstado("Cancelada");
+        //Obtener detalles
+        List<DetalleReserva> detalles =
+            detalleReservaRepository.findByReserva_IdReserva(reserva.getIdReserva());
+
+        //Se cambia el estado de la habitacion a disponible
+        for (DetalleReserva detalle : detalles) {
+            Habitacion h = detalle.getHabitacion();
+            h.setEstado("Libre");
+            habitacionRepository.save(h);
+        }
+
+        //Se borran todos los detalles reserva asociado al idReserva
+        detalleReservaRepository.deleteAll(detalles);
+
+        //Guardar cambios
+        reservaRepository.save(reserva);
+    }
+    public class NotFoundException extends RuntimeException {
+    public NotFoundException(String msg) {
+        super(msg);
+    }
+}
 }

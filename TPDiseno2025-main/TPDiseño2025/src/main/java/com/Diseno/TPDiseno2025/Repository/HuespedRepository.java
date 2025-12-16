@@ -38,4 +38,8 @@ public interface HuespedRepository extends JpaRepository<Huesped, Integer> {
 
     Boolean existsByTipoDniAndDni(String tipoDni, Integer dni);
 
+    List<Huesped> findByApellidoAndNombreStartingWithIgnoreCase(
+        String apellido,
+        String nombre
+    );
 }
