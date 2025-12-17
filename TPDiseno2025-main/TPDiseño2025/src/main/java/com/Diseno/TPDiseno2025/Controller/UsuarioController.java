@@ -16,15 +16,20 @@ import com.Diseno.TPDiseno2025.Domain.Usuario;
 import com.Diseno.TPDiseno2025.Model.UsuarioDTO;
 import com.Diseno.TPDiseno2025.Service.UsuarioService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/auth")
+@Tag(name="Usuario controller")
 public class UsuarioController {
     
     Logger logger = org.slf4j.LoggerFactory.getLogger(UsuarioController.class);
 
     private final UsuarioService usuarioService;
 
+    @Operation(summary="get usuarios")
     @GetMapping("/debug/usuarios")
     public ResponseEntity<List<Usuario>> verTodosLosUsuarios() {
         return ResponseEntity.ok(usuarioService.findAll());
@@ -34,6 +39,7 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
+    @Operation(summary="post usuarios")
     @PostMapping("/register")
     public ResponseEntity<Usuario> registrarUsuario(@RequestBody UsuarioDTO usDTO) {
         // Llamamos al servicio para que guarde al usuario
@@ -43,6 +49,7 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioRegistrado);
     }
     
+    @Operation(summary="post login usuarios")
     @PostMapping("/login")
     public ResponseEntity<Usuario> login(@RequestBody UsuarioDTO usDTO) {
         // Llamamos al servicio. Si falla, el servicio lanzará tu AuthException
