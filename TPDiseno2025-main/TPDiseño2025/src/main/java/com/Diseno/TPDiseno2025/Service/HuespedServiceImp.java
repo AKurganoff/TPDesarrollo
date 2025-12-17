@@ -210,65 +210,6 @@ public class HuespedServiceImp implements HuespedService {
     }
 
     @Override
-    public void DarDeAltaHuesped(HuespedDTO dto){
-        validarDatos(dto);
-        if (huespedRepository.existsByDni(dto.getDni())) {
-            throw new IllegalArgumentException("El huésped ya existe");
-        }
-        Telefono tel = new Telefono();
-        DireccionDTO direccionDTO = dto.getDireccion();
-
-        DireccionId id = new DireccionId();
-        id.setCalle(direccionDTO.getCalle());
-        id.setNumero(direccionDTO.getNumero());
-        id.setDepartamento(direccionDTO.getDepartamento());
-        id.setPiso(direccionDTO.getPiso());
-        id.setCodPostal(direccionDTO.getCodPostal());
-
-        Direccion direccion;
-
-        if (direccionService.direccionExists(
-                direccionDTO.getCalle(),
-                direccionDTO.getNumero(),
-                direccionDTO.getDepartamento(),
-                direccionDTO.getPiso(),
-                direccionDTO.getCodPostal()
-        )) {
-            direccion = direccionService.obtenerDireccionbyId(id);
-        } 
-        else {
-            direccionService.crearDireccion(id, direccionDTO);
-            direccion = direccionService.obtenerDireccionbyId(id);
-        }
-
-        
-
-
-        Huesped huesped = new Huesped();
-        huesped.setNombre(dto.getNombre());
-        huesped.setApellido(dto.getApellido());
-        huesped.setTipoDni(dto.getTipoDni());
-        huesped.setDni(dto.getDni());
-        huesped.setDireccion(direccion);
-        huesped.setEmail(dto.getEmail());
-        huesped.setFechaNacimiento(dto.getFechaNacimiento());
-        huesped.setEdad(dto.getEdad());
-        huesped.setOcupacion(dto.getOcupacion());
-        huesped.setPosIva(dto.getPosIva());
-
-
-        huespedRepository.save(huesped);
-        tel.setHuesped(this.mapToEntity(new Huesped(), dto));
-        if(dto.getTelefono() != null){
-            tel.setTelefono(dto.getTelefono());
-        } else {
-            tel.setTelefono("-");
-        }
-        
-        telefonoRepository.save(tel);
-    }
-
-    @Override
     public HuespedDTO buscarHuespedByNombreAndapellidoAndTipoDniAndDni(String nombre, String apellido, String tipodni, Integer dni){
         Huesped h = huespedRepository.findByNombreAndApellidoAndTipoDniAndDni(nombre, apellido, tipodni, dni)
                     .orElseThrow(() -> new NotFoundException("Huesped no encontrado"));
