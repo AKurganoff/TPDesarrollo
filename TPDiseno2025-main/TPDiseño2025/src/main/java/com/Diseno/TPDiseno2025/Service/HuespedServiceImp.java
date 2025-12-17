@@ -260,9 +260,9 @@ public class HuespedServiceImp implements HuespedService {
         huespedRepository.save(huesped);
         tel.setHuesped(this.mapToEntity(new Huesped(), dto));
         if(dto.getTelefono() != null){
-            tel.setTelefono("-");
-        } else {
             tel.setTelefono(dto.getTelefono());
+        } else {
+            tel.setTelefono("-");
         }
         
         telefonoRepository.save(tel);
