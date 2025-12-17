@@ -10,5 +10,5 @@ import com.Diseno.TPDiseno2025.Domain.Factura;
 public interface FacturaRepository
         extends JpaRepository<Factura, Integer> {
 
-    boolean existsByEstadia(Estadia estadia);
+    boolean existsByIdEstadia(Estadia estadia);
 }

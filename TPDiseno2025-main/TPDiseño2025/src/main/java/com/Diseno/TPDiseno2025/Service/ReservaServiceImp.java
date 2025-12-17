@@ -231,7 +231,7 @@ public class ReservaServiceImp implements ReservaService {
         //Se cambia el estado de la habitacion a disponible
         for (DetalleReserva detalle : detalles) {
             Habitacion h = detalle.getHabitacion();
-            h.setEstado("Disponible");
+            h.setEstado("Libre");
             habitacionRepository.save(h);
         }
 

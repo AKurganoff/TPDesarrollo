@@ -52,6 +52,7 @@ public class FacturaController {
         dto.setHoraCheckin(estadia.getHoraCheckIn());
         dto.setHoraCheckout(estadia.getHoraCheckOut());
         dto.setIdReserva(estadia.getReserva().getIdReserva());
+        dto.setIdHabitacion(numeroHabitacion);
 
         return ResponseEntity.ok(dto);
     }

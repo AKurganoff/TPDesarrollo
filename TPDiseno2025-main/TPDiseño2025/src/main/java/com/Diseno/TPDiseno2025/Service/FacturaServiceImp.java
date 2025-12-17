@@ -42,10 +42,10 @@ public class FacturaServiceImp implements FacturaService{
         validarDatosBusqueda(numeroHabitacion, horaCheckout);
 
         Estadia estadia = estadiaRepository
-                .findByReserva_Habitacion_NumeroAndHoraCheckOut(numeroHabitacion, horaCheckout)
+                .buscarEstadiaPorHabitacionYHora(numeroHabitacion, horaCheckout)
                 .orElseThrow(() -> new RuntimeException("No existe una estadía activa para la habitación"));
 
-        if (facturaRepository.existsByEstadia(estadia)) {
+        if (facturaRepository.existsByIdEstadia(estadia)) {
             throw new RuntimeException("La estadía ya fue facturada");
         }
 
