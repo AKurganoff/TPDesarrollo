@@ -15,4 +15,10 @@ public class ResponsablePagoDTO {
 
     @NotNull
     private String condicionIVA;
+
+    public ResponsablePagoDTO (Integer idResp, String razonSoc, String condIva) {
+        this.idResponsablePago = idResp;
+        this.razonSocial = razonSoc;
+        this.condicionIVA = condIva;
+    }
 }

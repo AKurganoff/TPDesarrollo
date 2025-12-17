@@ -15,7 +15,9 @@ import com.Diseno.TPDiseno2025.Domain.DetalleEstadia;
 import com.Diseno.TPDiseno2025.Domain.Estadia;
 import com.Diseno.TPDiseno2025.Domain.Factura;
 import com.Diseno.TPDiseno2025.Domain.ResponsablePago;
+import com.Diseno.TPDiseno2025.Model.ConsumibleDTO;
 import com.Diseno.TPDiseno2025.Model.FacturaPreviewDTO;
+import com.Diseno.TPDiseno2025.Model.ResponsablePagoDTO;
 import com.Diseno.TPDiseno2025.Repository.ConsumibleRepository;
 
 @Service
@@ -61,16 +63,19 @@ public class FacturaServiceImp implements FacturaService{
 
         List<Consumible> consumos = obtenerConsumiblesNoFacturados(estadia);
 
-        double subtotal = calcularSubtotal(estadia, consumos);
-        double iva = calcularIVA(subtotal, responsable.getCondicionIVA());
-        double total = subtotal + iva;
+        Double subtotal = calcularSubtotal(estadia, consumos);
+        Double iva = calcularIVA(subtotal, responsable.getCondicionIVA());
+        Double total = subtotal + iva;
 
         String tipoFactura = determinarTipoFactura(responsable.getCondicionIVA());
-
+        List<ConsumibleDTO> consumosDTO = consumos.stream()
+        .map(c -> new ConsumibleDTO(c.getIdConsumible(), c.getNombre(), c.getPrecio()))
+        .toList();
+        ResponsablePagoDTO responsableDTO = new ResponsablePagoDTO(responsable.getIdResponsablePago(),responsable.getRazonSocial(),responsable.getCondicionIVA());
         return new FacturaPreviewDTO(
-                responsable,
+                responsableDTO,
                 estadia,
-                consumos,
+                consumosDTO,
                 subtotal,
                 iva,
                 total,
@@ -96,11 +101,11 @@ public class FacturaServiceImp implements FacturaService{
         double total = subtotal + iva;
 
         Factura factura = new Factura();
-        factura.setEstadia(estadia);
-        factura.setResponsablePago(responsable);
+        factura.setIdEstadia(estadia);
+        factura.setIdResponsablePago(responsable);
         factura.setSubtotal(subtotal);
         factura.setIva(iva);
-        factura.setTotal(total);
+        factura.setPrecioFinal(total);
         factura.setTipoFactura(determinarTipoFactura(responsable.getCondicionIVA()));
         factura.setEstado("PENDIENTE_PAGO");
         factura.setFecha(LocalDate.now());

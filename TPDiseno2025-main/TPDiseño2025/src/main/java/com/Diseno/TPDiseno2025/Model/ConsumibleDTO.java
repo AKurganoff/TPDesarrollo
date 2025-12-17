@@ -12,4 +12,10 @@ public class ConsumibleDTO {
     private String nombre;
     @NotNull
     private Double precio;
+
+    public ConsumibleDTO(Integer idCons, String nombre, Double precio){
+        this.idConsumible = idCons;
+        this.nombre = nombre;
+        this.precio = precio;
+    }
 }

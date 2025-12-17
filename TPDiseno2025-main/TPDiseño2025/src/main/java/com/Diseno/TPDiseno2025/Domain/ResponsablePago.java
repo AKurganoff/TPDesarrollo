@@ -30,12 +30,12 @@ public class ResponsablePago {
     @Column(name = "razon_social", nullable = false)
     private String razonSocial;
 
-    @Enumerated(EnumType.STRING)
-    private TipoResponsable tipo; // FISICA / JURIDICA
+    private String tipo; // FISICA / JURIDICA
 
     @Column(unique = true)
     private String cuit;   // para jurídica
 
+    @Column(unique = true)
     private String dni;    // para física
 
     private LocalDate fechaNacimiento; // validar mayoría de edad

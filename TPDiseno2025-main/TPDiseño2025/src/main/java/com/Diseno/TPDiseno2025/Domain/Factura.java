@@ -46,13 +46,11 @@ public class Factura {
     @Column(nullable = false)
     private Double iva;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "tipo_factura", nullable = false)
-    private TipoFactura tipoFactura;
+    private String tipoFactura;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false)
-    private EstadoFactura estado;
+    private String estado;
 
     @Column(name = "nro_factura", nullable = false)
     private Integer nroFactura;

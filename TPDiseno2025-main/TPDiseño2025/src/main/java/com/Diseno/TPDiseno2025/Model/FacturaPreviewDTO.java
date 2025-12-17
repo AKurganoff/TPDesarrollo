@@ -16,4 +16,14 @@ public class FacturaPreviewDTO {
     private Double iva;
     private Double total;
     private String tipoFactura;
+    public FacturaPreviewDTO (ResponsablePagoDTO responsable, Estadia estadia, List<ConsumibleDTO> consumos, 
+        Double subtotal, Double iva, Double total, String tipoFactura){
+        this.responsable = responsable;
+        this.estadia = estadia;
+        this.consumos = consumos;
+        this.subtotal = subtotal;
+        this.iva = iva;
+        this.total = total;
+        this.tipoFactura = tipoFactura;
+    }
 }
