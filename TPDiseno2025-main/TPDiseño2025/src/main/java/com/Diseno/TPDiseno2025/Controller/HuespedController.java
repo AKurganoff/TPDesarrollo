@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,11 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PatchMapping;
 
 import com.Diseno.TPDiseno2025.Model.HuespedDTO;
 import com.Diseno.TPDiseno2025.Service.HuespedService;
-import com.Diseno.TPDiseno2025.Service.command.ModificarHuespedCommand;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -101,15 +100,22 @@ public class HuespedController {
     
     @PutMapping("/{tipodni}/{dni}")
     public ResponseEntity<Integer> updateHuesped(
-            @PathVariable String tipodni,
-            @PathVariable Integer dni,
-            @RequestBody @Valid ModificarHuespedCommand command) {
+                  @PathVariable(name = "dni") final Integer dni, 
 
-        command.setTipoDni(tipodni);
-        command.setDni(dni);
 
-        huespedservice.modificarHuesped(command);
-        return ResponseEntity.ok().build();
+            @PathVariable(name = "tipodni") final String tipodni, 
+
+
+            @RequestBody @Valid final HuespedDTO huespedDTO) { // @RequestBody para los datos nuevos
+
+
+        
+
+
+        huespedservice.modificarHuespedDTO(tipodni, dni, huespedDTO);
+
+
+        return ResponseEntity.ok(dni);
     }
 
     @DeleteMapping("/{tipodni}/{dni}")

@@ -18,6 +18,8 @@ public interface HuespedService {
 
     void modificarHuesped(ModificarHuespedCommand cmd);
 
+    void modificarHuespedDTO(String tipoDni, Integer dni, HuespedDTO hDTO);
+
     void eliminarHuespedByTipoDniAndDni(String tipoDni, Integer dni);
     void darDeBajaHuesped(String tipoDni, Integer dni, String modo);
 

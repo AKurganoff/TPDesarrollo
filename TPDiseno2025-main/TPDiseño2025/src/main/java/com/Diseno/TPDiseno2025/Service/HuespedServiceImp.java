@@ -15,11 +15,12 @@ import com.Diseno.TPDiseno2025.Model.HuespedDTO;
 import com.Diseno.TPDiseno2025.Repository.DireccionRepository;
 import com.Diseno.TPDiseno2025.Repository.HuespedRepository;
 import com.Diseno.TPDiseno2025.Repository.TelefonoRepository;
-import com.Diseno.TPDiseno2025.Util.NotFoundException;
+import com.Diseno.TPDiseno2025.Service.command.ModificarHuespedCommand;
 import com.Diseno.TPDiseno2025.Service.strategy.BajaHuespedContext;
 import com.Diseno.TPDiseno2025.Service.strategy.BajaModo;
-import jakarta.transaction.Transactional;
+import com.Diseno.TPDiseno2025.Util.NotFoundException;
 
+import jakarta.transaction.Transactional;
 
 
 @Service
@@ -105,14 +106,32 @@ public class HuespedServiceImp implements HuespedService {
     }
 
     @Override
-    public void modificarHuesped(String tipoDni, Integer numOriginal, Huesped hActualizado) {
-        Huesped existente = buscarHuespedByTipoDniAndDni(tipoDni, numOriginal);
+    public void modificarHuesped(ModificarHuespedCommand cmd) {
+        Huesped existente = buscarHuespedByTipoDniAndDni(cmd.getTipoDni(), cmd.getDni());
 
-        
-        existente.setNombre(hActualizado.getNombre());
-        existente.setApellido(hActualizado.getApellido());
-        existente.setDireccion(hActualizado.getDireccion());
-        
+        existente.setNombre(cmd.getNombre());
+        existente.setApellido(cmd.getApellido());
+        Direccion direc = direccionService.mapToEntDireccion(cmd.getDireccion());
+        if (!direccionService.direccionExists(
+                direc.getId().getCalle(),
+                direc.getId().getNumero(),
+                direc.getId().getDepartamento(),
+                direc.getId().getPiso(),
+                direc.getId().getCodPostal()
+            )) {
+            direccionService.crearDireccion(direc.getId(), cmd.getDireccion());
+            direc = direccionRepository.findById(direc.getId()).get();
+        }
+        existente.setDireccion(direc);
+        existente.setEmail(cmd.getEmail());
+        existente.setOcupacion(cmd.getOcupacion());
+        existente.setPosIva(cmd.getPosIva());
+
+         Telefono tel = telefonoRepository.findByHuesped_Dni(existente.getDni())
+                .orElse(new Telefono());
+        tel.setHuesped(existente);
+        tel.setTelefono(cmd.getTelefono());
+        telefonoRepository.save(tel);
 
         huespedRepository.save(existente);
     }

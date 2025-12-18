@@ -15,4 +15,6 @@ public interface TelefonoRepository extends JpaRepository<Telefono, Integer> {
     void deleteByHuesped_Dni(Integer dni);
 
     boolean existsByHuesped_Dni(Integer dni);
+
+    Optional<Telefono> findByHuesped_Dni(Integer dni);
 }
