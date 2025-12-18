@@ -170,9 +170,7 @@ export default function ModificarHuespedPage({ params }: { params: Promise<{ dni
     if (!form.codPostal) registrarError("codPostal", "El código postal es obligatorio.");
 
     // Reglas Específicas
-    if (form.dni && form.dni.length !== 8) {
-        registrarError("dni", "El DNI debe tener exactamente 8 dígitos.");
-    }
+    
     if (form.cuil && form.cuil.length !== 11 && form.cuil.length > 0) { // Validar solo si escribió algo
         registrarError("cuil", "El CUIL debe tener exactamente 11 dígitos.");
     }
