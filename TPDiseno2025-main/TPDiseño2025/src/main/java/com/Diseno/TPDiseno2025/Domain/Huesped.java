@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinColumns;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
@@ -48,6 +49,11 @@ public class Huesped {
     @Column(name = "activo", nullable = false)
     private Boolean activo = true;
 
+    @Column(name = "nacionalidad", nullable = false)
+    private String nacionalidad;
+    @OneToMany
+    @Column(name = "telefono", nullable = false)
+    private Telefono telefono;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumns({
         @JoinColumn(name = "calle", referencedColumnName = "calle"),
