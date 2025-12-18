@@ -32,5 +32,8 @@ GET /tiposhabitacion, GET /reservas/disponibilidad
 Para CU6:
 GET /reservas/apellido, DELETE /reservas/{id}
 
+PARA CU7:
+GET /facturacion/checkout, GET /estadias/estadia, POST /facturacion/responsable, GET /facturacion/preview, POST /facturacion/generar
+
 Para CU11:
 GET /huespedes/getByDni, PUT /huespedes/{tipoDni}/{dni}, DELETE /huespedes/{tipoDni}/{dni}, 
