@@ -397,7 +397,7 @@ CREATE TABLE public.huesped (
     ocupacion character varying(50),
     tipodni character varying(10) NOT NULL,
     mail character varying(20) NOT NULL,
-    pos_iva character varying(20) NOT NULL,
+    pos_iva character varying(50) NOT NULL,
     calle character varying(20) NOT NULL,
     numero integer NOT NULL,
     departamento character varying(5) NOT NULL,
