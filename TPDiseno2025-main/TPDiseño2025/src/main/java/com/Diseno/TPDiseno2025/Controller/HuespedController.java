@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 
 import com.Diseno.TPDiseno2025.Model.HuespedDTO;
 import com.Diseno.TPDiseno2025.Service.HuespedService;
+import com.Diseno.TPDiseno2025.Service.command.ModificarHuespedCommand;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -100,12 +101,15 @@ public class HuespedController {
     
     @PutMapping("/{tipodni}/{dni}")
     public ResponseEntity<Integer> updateHuesped(
-            @PathVariable(name = "dni") final Integer dni, 
-            @PathVariable(name = "tipodni") final String tipodni, 
-            @RequestBody @Valid final HuespedDTO huespedDTO) { // @RequestBody para los datos nuevos
-        
-        huespedservice.modificarHuespedDTO(tipodni, dni, huespedDTO);
-        return ResponseEntity.ok(dni);
+            @PathVariable String tipodni,
+            @PathVariable Integer dni,
+            @RequestBody @Valid ModificarHuespedCommand command) {
+
+        command.setTipoDni(tipodni);
+        command.setDni(dni);
+
+        huespedservice.modificarHuesped(command);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{tipodni}/{dni}")

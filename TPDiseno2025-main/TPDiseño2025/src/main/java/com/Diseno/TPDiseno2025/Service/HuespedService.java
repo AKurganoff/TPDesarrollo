@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.Diseno.TPDiseno2025.Domain.Huesped;
 import com.Diseno.TPDiseno2025.Model.HuespedDTO;
+import com.Diseno.TPDiseno2025.Service.command.ModificarHuespedCommand;
 
 public interface HuespedService {
  
@@ -15,9 +16,7 @@ public interface HuespedService {
 
     HuespedDTO buscarHuespedDTOByTipoDniAndDni(String tipodni, Integer dni);
 
-    void modificarHuesped(String tipoDni, Integer numOriginal, Huesped hActualizado);
-
-    void modificarHuespedDTO(String tipoDni, Integer dni, HuespedDTO hDTO);
+    void modificarHuesped(ModificarHuespedCommand cmd);
 
     void eliminarHuespedByTipoDniAndDni(String tipoDni, Integer dni);
     void darDeBajaHuesped(String tipoDni, Integer dni, String modo);

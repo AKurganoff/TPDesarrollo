@@ -57,5 +57,21 @@ public class Huesped {
         @JoinColumn(name = "cod_postal", referencedColumnName = "cod_postal")
     })
     private Direccion direccion;
+    public void modificarDatos(
+        String tipoDni,
+        String nombre,
+        String apellido,
+        String email,
+        String ocupacion,
+        String posIva,
+        Direccion direccion) {
 
+    this.tipoDni = tipoDni;
+    this.nombre = nombre;
+    this.apellido = apellido;
+    this.email = email;
+    this.ocupacion = ocupacion;
+    this.posIva = posIva;
+    this.direccion = direccion;
+}
 }
