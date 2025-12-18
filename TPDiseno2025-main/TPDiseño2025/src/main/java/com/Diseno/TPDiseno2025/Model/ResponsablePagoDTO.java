@@ -9,11 +9,12 @@ import lombok.Setter;
 @Setter
 public class ResponsablePagoDTO {
 
-    private Integer idResponsablePago;
+    private Integer idResponsablePago; // si ya existe (paso siguiente del flujo)
+    private Integer dniHuesped;        // si el responsable es un huésped
 
     @Valid
     private JuridicaDTO juridica;
 
-    @NotBlank
     private String razonSocial;
 }
+
