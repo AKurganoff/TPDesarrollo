@@ -1,6 +1,7 @@
 package com.Diseno.TPDiseno2025.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import com.Diseno.TPDiseno2025.Domain.Estadia;
@@ -13,4 +14,5 @@ public interface EstadiaService {
     void ocuparHabitacion(List<HabitacionDTO> habitacionesDTO, List<HuespedDTO> huespedesDTO, LocalDate fechaInicio, LocalDate fechaFin, Integer idReservaPrevia);
     Estadia buscarEstadia(EstadiaDTO eDTO);
     Estadia mapToDTO(Estadia estadia, EstadiaDTO eDTO);
+    Estadia obtenerEstadiaFacturable(Integer numeroHabitacion, LocalTime horaCheckout);
 }

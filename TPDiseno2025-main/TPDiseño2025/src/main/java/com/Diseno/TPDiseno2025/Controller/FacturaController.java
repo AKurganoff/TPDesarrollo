@@ -17,7 +17,10 @@ import com.Diseno.TPDiseno2025.Domain.Huesped;
 import com.Diseno.TPDiseno2025.Domain.ResponsablePago;
 import com.Diseno.TPDiseno2025.Model.*;
 import com.Diseno.TPDiseno2025.Service.FacturaService;
-import com.Diseno.TPDiseno2025.Model.ResponsablePagoResponseDTO;
+
+@RestController
+@RequestMapping("/facturacion")
+@CrossOrigin(origins = "http://localhost:3000")
 public class FacturaController {
     @Autowired 
     private FacturaService facturaService;

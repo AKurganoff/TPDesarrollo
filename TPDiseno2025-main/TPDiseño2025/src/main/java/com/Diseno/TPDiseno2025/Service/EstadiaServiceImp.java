@@ -23,6 +23,7 @@ import com.Diseno.TPDiseno2025.Repository.EstadiaRepository;
 import com.Diseno.TPDiseno2025.Repository.HabitacionRepository;
 import com.Diseno.TPDiseno2025.Repository.HuespedRepository;
 import com.Diseno.TPDiseno2025.Repository.ReservaRepository;
+import com.Diseno.TPDiseno2025.Repository.FacturaRepository;
 
 @Service
 public class EstadiaServiceImp implements EstadiaService{
@@ -45,11 +46,33 @@ public class EstadiaServiceImp implements EstadiaService{
     @Autowired
     DetalleEstadiaRepository detalleEstadiaRepository;
 
+    @Autowired
+    FacturaRepository facturaRepository;
+
 
     @Override
     public void crearEstadia(EstadiaDTO eDTO){
         Estadia e = this.mapToDTO(new Estadia(), eDTO);
         estadiaRepository.save(e);
+    }
+
+    public Estadia obtenerEstadiaFacturable(Integer numeroHabitacion, LocalTime horaCheckout) {
+        validarDatosBusqueda(numeroHabitacion, horaCheckout);
+
+        Estadia estadia = estadiaRepository
+                .buscarEstadiaPorHabitacionYHora(numeroHabitacion, horaCheckout)
+                .orElseThrow(() -> new RuntimeException("No existe una estadía activa para la habitación"));
+
+        if (facturaRepository.existsByIdEstadia(estadia)) {
+            throw new RuntimeException("La estadía ya fue facturada");
+        }
+
+        return estadia;
+    }
+    private void validarDatosBusqueda(Integer numeroHabitacion, LocalTime horaCheckout) {
+        if (numeroHabitacion == null || horaCheckout == null) {
+            throw new RuntimeException("Datos de búsqueda incompletos");
+        }
     }
     
     @Override

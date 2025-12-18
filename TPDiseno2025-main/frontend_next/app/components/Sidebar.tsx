@@ -55,6 +55,10 @@ export default function Sidebar() {
           <Link href="/dashboard/habitaciones" className={getLinkClass('/dashboard/habitaciones')}>
             🛏️ Habitaciones
           </Link>
+
+          <Link href="/dashboard/facturar" className={getLinkClass('/dashboard/facturar')}>
+            🧾 Facturar
+          </Link>
         </nav>
       </div>
 
